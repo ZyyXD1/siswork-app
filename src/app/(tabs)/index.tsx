@@ -1,5 +1,5 @@
 import * as Device from "expo-device";
-import { useRouter } from "expo-router"; // 1. Import useRouter untuk navigasi programatis
+import { useRouter } from "expo-router";
 import { Platform, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -30,7 +30,7 @@ function getDevMenuHint() {
 }
 
 export default function HomeScreen() {
-  const router = useRouter(); // 2. Inisialisasi router
+  const router = useRouter();
 
   return (
     <ThemedView style={styles.container}>
@@ -58,10 +58,10 @@ export default function HomeScreen() {
           />
         </ThemedView>
 
-        {/* 3. Tambahkan Tombol Navigasi ke Halaman Login */}
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={() => router.push("/auth/screens/LoginScreen")} // 4. Navigasi ke halaman Login
+          onPress={() => router.push("/auth/screens/LoginScreen")}
+          accessibilityRole="button"
         >
           <ThemedText style={styles.loginButtonText}>Go to Login</ThemedText>
         </TouchableOpacity>
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.four,
     borderRadius: Spacing.four,
   },
-  // Style Tambahan untuk Tombol Navigasi
   loginButton: {
     backgroundColor: "#2563EB",
     paddingHorizontal: Spacing.four,
