@@ -317,25 +317,14 @@ export default function SisworkDashboard() {
           </Text>
           <Text style={styles.brandTagline}>Ruang kolaborasi pelajar</Text>
         </View>
-        <View style={styles.topBarActions}>
-          <TouchableOpacity
-            style={styles.chatShortcut}
-            onPress={() => demoNotice("Chat")}
-            accessibilityRole="button"
-            accessibilityLabel="Chat"
-          >
-            <Text style={styles.chatShortcutIcon}>▱</Text>
-            <Text style={styles.chatShortcutText}>Chat</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.notification}
-            onPress={() => demoNotice("Notifikasi")}
-            accessibilityLabel="Notifikasi"
-          >
-            <Text style={styles.notificationIcon}>♧</Text>
-            <View style={styles.notificationDot} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.notification}
+          onPress={() => demoNotice("Notifikasi")}
+          accessibilityLabel="Notifikasi"
+        >
+          <Text style={styles.notificationIcon}>♧</Text>
+          <View style={styles.notificationDot} />
+        </TouchableOpacity>
       </View>
       <View style={styles.welcome}>
         <Text style={styles.greeting}>Halo, Pelajar! 👋</Text>
@@ -535,15 +524,25 @@ export default function SisworkDashboard() {
       <View
         style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 10) }]}
       >
-        {(["Beranda", "Cari", "Profil"] as const).map((item) => {
-          const active = tab === item;
-          const icon = item === "Beranda" ? "⌂" : item === "Cari" ? "⌕" : "○";
+        {(["Beranda", "Chat", "Cari", "Profil"] as const).map((item) => {
+          const active = item !== "Chat" && tab === item;
+          const icon =
+            item === "Beranda"
+              ? "⌂"
+              : item === "Chat"
+                ? "▱"
+                : item === "Cari"
+                  ? "⌕"
+                  : "○";
           return (
             <TouchableOpacity
               key={item}
               accessibilityRole="button"
               accessibilityState={{ selected: active }}
-              onPress={() => setTab(item)}
+              accessibilityLabel={item}
+              onPress={() =>
+                item === "Chat" ? demoNotice("Chat") : setTab(item)
+              }
               style={styles.tabButton}
             >
               <View
@@ -695,21 +694,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  topBarActions: { flexDirection: "row", alignItems: "center", gap: 8 },
-  chatShortcut: {
-    height: 42,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-    paddingHorizontal: 12,
-    borderRadius: 15,
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#ECEFF5",
-  },
-  chatShortcutIcon: { color: "#4356C5", fontSize: 19, fontWeight: "800" },
-  chatShortcutText: { color: "#4356C5", fontSize: 10, fontWeight: "800" },
   brand: {
     color: "#202B42",
     fontSize: 20,
@@ -1113,16 +1097,15 @@ const styles = StyleSheet.create({
   logoutText: { color: "#C56868", fontSize: 10, fontWeight: "700" },
   tabBar: {
     flexDirection: "row",
-    justifyContent: "space-around",
     alignItems: "center",
     paddingTop: 8,
-    paddingHorizontal: 15,
+    paddingHorizontal: 8,
     backgroundColor: "#FFFFFF",
     borderTopWidth: 1,
     borderTopColor: "#ECEFF4",
   },
   tabButton: {
-    minWidth: 74,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     gap: 3,
